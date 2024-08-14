@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MoviesService } from '../../services/movies.service';
+import { Movie } from '../../models/movie';
 
 @Component({
   selector: 'app-home',
@@ -7,12 +8,21 @@ import { MoviesService } from '../../services/movies.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  movies: any = [];
+  PopuarMovies: Movie[] = [];
+  UpcomingMovies: Movie[] = [];
+  TopRatedMovies: Movie[] = [];
+
   constructor(private moviesService: MoviesService) {}
+
   ngOnInit(): void {
-    this.moviesService.getMovies().subscribe((response: any) => {
-      this.movies = response.results;
-      console.log(this.movies);
+    this.moviesService.getMovies('popular').subscribe((response: any) => {
+      this.PopuarMovies = response.results;
+    });
+    this.moviesService.getMovies('upcoming').subscribe((response: any) => {
+      this.UpcomingMovies = response.results;
+    });
+    this.moviesService.getMovies('top_rated').subscribe((response: any) => {
+      this.TopRatedMovies = response.results;
     });
   }
 }
